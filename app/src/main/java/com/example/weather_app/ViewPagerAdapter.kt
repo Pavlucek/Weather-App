@@ -6,7 +6,6 @@ import com.example.weather_app.SecondFragment
 import com.example.weather_app.ThirdFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-
     override fun getItemCount(): Int = 3 // Ilość fragmentów
 
     override fun createFragment(position: Int): Fragment {
@@ -17,4 +16,13 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
             else -> FirstFragment() // Domyślny fragment
         }
     }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun containsItem(itemId: Long): Boolean {
+        return itemId < itemCount
+    }
 }
+

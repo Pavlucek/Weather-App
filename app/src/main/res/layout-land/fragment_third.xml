@@ -5,8 +5,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:background="@color/darkblue"
     tools:context=".ThirdFragment">
 
+    <TextView
+        android:id="@+id/ThirdFragmentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

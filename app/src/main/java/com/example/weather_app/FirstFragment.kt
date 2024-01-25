@@ -1,59 +1,95 @@
 package com.example.weather_app
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FirstFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class FirstFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // Existing variables
+    private lateinit var cityEditText: EditText
+    private lateinit var getWeatherButton: Button
+    private lateinit var weatherTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        val view = inflater.inflate(R.layout.fragment_first, container, false)
+        cityEditText = view.findViewById(R.id.cityEditText)
+        getWeatherButton = view.findViewById(R.id.getWeatherButton)
+        weatherTextView = view.findViewById(R.id.FirstFragmentTextView)
+
+        getWeatherButton.setOnClickListener {
+            val city = cityEditText.text.toString()
+            if (city.isNotEmpty()) {
+                loadWeatherData(city)
+            } else {
+                // Notify user to enter a city name
+            }
+        }
+
+        return view
+    }
+    private fun loadWeatherData(city: String) {
+        val weatherApiService = WeatherApiService()
+        val apiKey = "9bc09018cfb9f27b8a6b2bec61d02aba" // Replace with your API key
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val weatherData = weatherApiService.getWeatherData(city, apiKey)
+                withContext(Dispatchers.Main) {
+                    updateUI(weatherData)
+                }
+            } catch (e: Exception) {
+                // Handle exception (e.g., city not found, network issues)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FirstFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FirstFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateUI(weatherData: WeatherData) {
+        val weather = weatherData.weather.firstOrNull() // Get the first Weather object (if available)
+
+        val timestamp = weatherData.timestamp // Time of data retrieval
+        val description = weather?.description ?: "N/A" // Weather description
+        val iconUrl = "https://openweathermap.org/img/wn/${weather?.icon}.png" // Weather icon URL
+
+        val weatherIconImageView = view?.findViewById<ImageView>(R.id.weatherIconImageView)
+
+        weatherTextView.text =
+            "City: ${weatherData.name}\n" +
+                    "Temperature: ${weatherData.main.temp}°C\n" +
+                    "Pressure: ${weatherData.main.pressure} hPa\n" +
+                    "Coordinates: [${weatherData.coord.lat}, ${weatherData.coord.lon}]\n" +
+                    "Timestamp: ${getFormattedTime(timestamp)}\n" +
+                    "Description: $description"
+
+        // Load and display the weather icon using Picasso or Glide
+        Picasso.get().load(iconUrl).into(weatherIconImageView)
+        // or
+        // Glide.with(this).load(iconUrl).into(weatherIconImageView)
     }
+
+
+    private fun getFormattedTime(timestamp: Long): String {
+        val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+        return sdf.format(Date(timestamp * 1000)) // Convert Unix timestamp to milliseconds
+    }
+
+
 }
