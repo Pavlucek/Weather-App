@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Weather-App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="additional_information">Additional Information</string>
+    <string name="base_information">Base Information</string>
+    <string name="weather_on_next_days">Weather on next days</string>
+</resources>
