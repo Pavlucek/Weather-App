@@ -11,15 +11,12 @@
         android:id="@+id/container_first_fragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/blue"
         android:layout_weight="1">
 
-        <!-- Add a TextView to the center of the FrameLayout -->
         <TextView
             android:id="@+id/FirstFragmentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="black nigger"
             android:layout_gravity="center"
             />
 
@@ -31,7 +28,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <!-- Add a TextView to the center of the FrameLayout -->
         <TextView
             android:id="@+id/SecondFragmentTextView"
             android:layout_width="wrap_content"
@@ -45,10 +41,8 @@
         android:id="@+id/container_third_fragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/orange"
         android:layout_weight="1">
 
-        <!-- Add a TextView to the center of the FrameLayout -->
         <TextView
             android:id="@+id/ThirdFragmentTextView"
             android:layout_width="wrap_content"

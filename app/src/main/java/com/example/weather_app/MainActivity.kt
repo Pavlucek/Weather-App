@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> "Current Weather"
                 1 -> "Weather Details"
                 2 -> "Forecast"
-                else -> ""
+                else -> throw IllegalArgumentException("Invalid position")
             }
         }.attach()
     }
