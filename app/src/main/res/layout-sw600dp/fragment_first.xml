@@ -7,19 +7,29 @@
     android:orientation="vertical"
     tools:context=".FirstFragment">
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/getWeatherButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </androidx.appcompat.widget.SwitchCompat>
+
     <EditText
         android:id="@+id/cityEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="60dp"
         android:autofillHints="Warsaw"
         android:gravity="center"
         android:hint="Enter name of the city"
         android:inputType="text"
         android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText"
-        tools:layout_editor_absoluteX="0dp">
+        tools:ignore="HardcodedText">
 
     </EditText>
 
@@ -27,6 +37,7 @@
         android:id="@+id/getWeatherButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue"
         android:layout_marginTop="84dp"
         android:text="Search Weather"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:backgroundTint="@color/blue"
         android:text="Refresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,11 +62,36 @@
 
     </Button>
 
+    <Button
+        android:id="@+id/favoriteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue"
+        android:text="Add to Favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favoriteloadButton"
+        tools:ignore="HardcodedText">
+
+    </Button>
+
+    <Button
+        android:id="@+id/favoriteloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue"
+        android:text="Load Favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/refreshButton"
+        tools:ignore="HardcodedText">
+
+    </Button>
+
     <TextView
         android:id="@+id/FirstFragmentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView">
@@ -70,10 +107,9 @@
         android:contentDescription="image"
         android:minWidth="120dp"
         android:minHeight="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/refreshButton"
+        app:layout_constraintTop_toBottomOf="@+id/favoriteButton"
         tools:ignore="HardcodedText" />
 
 

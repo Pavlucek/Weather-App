@@ -1,6 +1,7 @@
 package com.example.weather_app
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import java.util.Date
 import java.util.Locale
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,8 +27,12 @@ class FirstFragment : Fragment() {
     private lateinit var getWeatherButton: Button
     private lateinit var weatherTextView: TextView
     private lateinit var refreshButton: Button
+    private lateinit var favoriteButton: Button
+    private lateinit var favoriteloadButton: Button
+    private lateinit var temperatureSwitch: SwitchCompat
 
     private var lastSearchedCity: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +43,42 @@ class FirstFragment : Fragment() {
         getWeatherButton = view.findViewById(R.id.getWeatherButton)
         weatherTextView = view.findViewById(R.id.FirstFragmentTextView)
         refreshButton = view.findViewById(R.id.refreshButton)
-
+        favoriteloadButton = view.findViewById(R.id.favoriteloadButton)
+        temperatureSwitch = view.findViewById(R.id.TemperatureSwitchLayout)
         setupButtonListeners()
 
         return view
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        favoriteButton = view.findViewById(R.id.favoriteButton)
+        favoriteButton.setOnClickListener {
+            if (lastSearchedCity != null) {
+                saveCityToFavorites(lastSearchedCity!!)
+                showToast("$lastSearchedCity added to favorites")
+            } else {
+                showToast("No city searched to add to favorites")
+            }
+        }
+    }
+
+    private fun saveCityToFavorites(cityName: String) {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString("FAVORITE_CITY", cityName)
+            apply()
+        }
+    }
+    private fun loadFavoriteCity() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val favoriteCity = sharedPref?.getString("FAVORITE_CITY", null)
+        if (favoriteCity != null) {
+            loadWeatherData(favoriteCity)
+        } else {
+            showToast("No favorite city saved")
+        }
     }
 
     private fun setupButtonListeners() {
@@ -61,6 +99,9 @@ class FirstFragment : Fragment() {
                 showToast("No previous search data available")
             }
         }
+        favoriteloadButton.setOnClickListener{
+            loadFavoriteCity()
+        }
     }
 
     private fun loadWeatherData(city: String) {
@@ -78,6 +119,7 @@ class FirstFragment : Fragment() {
             }
         }
     }
+
 
     private fun handleWeatherError(e: Exception) {
         when (e) {
@@ -107,12 +149,20 @@ class FirstFragment : Fragment() {
         val formmatedTime = getFormattedTimeFromMillis(currentTimeMillis)
         val description = weather?.description ?: "N/A" // Weather description
         val iconUrl = "https://openweathermap.org/img/wn/${weather?.icon}.png" // Weather icon URL
+        val temperatureInKelvin = weatherData.main.temp
+        val temperature = if (temperatureSwitch.isChecked) {
+            // Konwersja na Celsiusze
+            kelvinToCelsius(temperatureInKelvin)
+        } else {
+            // Konwersja na Fahrenheita
+            kelvinToFahrenheit(temperatureInKelvin)
+        }
 
         val weatherIconImageView = view?.findViewById<ImageView>(R.id.weatherIconImageView)
 
         weatherTextView.text =
             "City: ${weatherData.name}\n" +
-                    "Temperature: ${weatherData.main.temp}°C\n" +
+                    "Temperature: ${String.format("%.2f", temperature)}${if (temperatureSwitch.isChecked) "°C" else "°F"}\n" +
                     "Pressure: ${weatherData.main.pressure} hPa\n" +
                     "Coordinates: [${weatherData.coord.lat}, ${weatherData.coord.lon}]\n" +
                     "Timestamp: ${formmatedTime}\n" + // Use the current time
@@ -123,6 +173,13 @@ class FirstFragment : Fragment() {
     private fun getFormattedTimeFromMillis(timestampMillis: Long): String {
         val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
         return sdf.format(Date(timestampMillis))
+    }
+    private fun kelvinToCelsius(kelvin: Double): Double {
+        return kelvin - 273.15
+    }
+
+    private fun kelvinToFahrenheit(kelvin: Double): Double {
+        return kelvin * 9/5 - 459.67
     }
 
 }

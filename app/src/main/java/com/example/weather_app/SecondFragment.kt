@@ -29,12 +29,12 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve the weather information from arguments
+        // Pobieranie danych z bundla
         val powerAndSpeed = arguments?.getString("powerAndSpeed") ?: "N/A"
         val humidity = arguments?.getString("humidity") ?: "N/A"
         val visibility = arguments?.getString("visibility") ?: "N/A"
 
-        // Display the information in the TextView
+        // Wyświetlanie danych
         secondFragmentTextView.text = "Power and Speed of Wind: $powerAndSpeed\n" +
                 "Humidity: $humidity\n" +
                 "Visibility: $visibility"
