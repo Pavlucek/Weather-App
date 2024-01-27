@@ -8,31 +8,34 @@
     tools:context=".FirstFragment">
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/TemperatureSwitchLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/getWeatherButton"
+        android:text="Celsius / Fahrenheit "
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText">
 
     </androidx.appcompat.widget.SwitchCompat>
+
 
     <EditText
         android:id="@+id/cityEditText"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="36dp"
         android:autofillHints="Warsaw"
         android:gravity="center"
         android:hint="Enter name of the city"
         android:inputType="text"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText">
 
     </EditText>
-
 
     <Button
         android:id="@+id/getWeatherButton"
@@ -90,14 +93,14 @@
 
     <TextView
         android:id="@+id/FirstFragmentTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="95dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
+        app:layout_constraintHorizontal_bias="0.886"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weatherIconImageView"
-        app:layout_constraintVertical_bias="0.333">
+        app:layout_constraintVertical_bias="0.309">
 
 
     </TextView>

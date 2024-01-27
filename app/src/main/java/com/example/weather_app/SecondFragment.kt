@@ -7,15 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SecondFragment : Fragment() {
-
+    private lateinit var viewModel: WeatherViewModel
     private lateinit var secondFragmentTextView: TextView
 
+    @Deprecated("Deprecated in Java")Www
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity()).get(WeatherViewModel::class.java)
+
+        viewModel.weatherData.observe(viewLifecycleOwner, Observer { data ->
+            updateUI(data) // Metoda do aktualizacji UI
+        })
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,6 +34,13 @@ class SecondFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_second, container, false)
         secondFragmentTextView = view.findViewById(R.id.SecondFragmentTextView)
         return view
+    }
+    @SuppressLint("SetTextI18n")
+    private fun updateUI(data: WeatherData) {
+        // Użyj danych pogodowych do aktualizacji UI
+        secondFragmentTextView.text = "Humidity: ${data.main.humidity}%\n" +
+                "Wind Speed: ${data.wind.speed} m/s\n" +
+                "Visibility: ${data.visibility} meters"
     }
 
     @SuppressLint("SetTextI18n")

@@ -17,12 +17,14 @@ import java.util.Locale
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import retrofit2.HttpException
 import java.io.IOException
 
 
 class FirstFragment : Fragment() {
+    private lateinit var viewModel: WeatherViewModel
     private lateinit var cityEditText: EditText
     private lateinit var getWeatherButton: Button
     private lateinit var weatherTextView: TextView
@@ -48,6 +50,10 @@ class FirstFragment : Fragment() {
         setupButtonListeners()
 
         return view
+    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity()).get(WeatherViewModel::class.java)
     }
 
 
@@ -112,7 +118,8 @@ class FirstFragment : Fragment() {
             try {
                 val weatherData = weatherApiService.getWeatherData(city, apiKey)
                 withContext(Dispatchers.Main) {
-                    updateUI(weatherData)
+                    viewModel.updateWeatherData(weatherData) // Aktualizacja ViewModel
+                    updateUI(weatherData) // Aktualizacja UI
                 }
             } catch (e: Exception) {
                 handleWeatherError(e)
